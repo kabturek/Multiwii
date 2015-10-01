@@ -596,6 +596,12 @@ void annexCode() { // this code is excetuted at each loop and won't interfere wi
   uint16_t tmp,tmp2;
   uint8_t axis,prop1,prop2;
 
+// FRSKY TELEMETRY ADD
+#if defined(TELEMETRY_FRSKY)
+  telemetry_frsky();
+#endif
+// END FRSKY
+
   // PITCH & ROLL only dynamic PID adjustemnt,  depending on throttle value
   prop2 = 128; // prop2 was 100, is 128 now
   if (rcData[THROTTLE]>1500) { // breakpoint is fix: 1500

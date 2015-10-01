@@ -339,7 +339,9 @@
       #define LOCALIZER_POWER    7    // 0=1mW, 1=2mW, 2=3mW, 3=6mW, 4=13mW, 5=25mW, 6=50mW, 7=100mW
       #define LOCALIZER_DELAY    120  // delay from signal lost to start of localizer in seconds
       #define ELERES_BIND             // uncomment it if you want binding via GUI instead of setting BIND_SIGNATURE manually
-      
+    /********************** Frsky D-series receiver      ***********************************/
+      #define TELEMETRY_FRSKY
+
     /**********************    Spektrum Satellite Reciver    *******************************/
       /* The following lines apply only for Spektrum Satellite Receiver
          Spektrum Satellites are 3V devices.  DO NOT connect to 5V!
