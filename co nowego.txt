@@ -1,0 +1,322 @@
+Wersja 2.27
+------------
+1. Dodano przesy³anie komend¹ MSP_ANALOG oraz telemetri¹ eLeReS pr¹du z czujki pr¹dowej pod³¹czonej do pinu A2 (na AIO).
+2. Przywrócono stary sposób hamowania po opadaniu na failsafe. Poprzedni nie sprawdzi³ siê w praktyce.
+3. Poprawiono wspó³prace z i2c naw GPS dla p³yt na mega328p
+4. Poprawka AltHold dla samolotów
+5. Dodano tryb przekaŸnika dla eLeReSa opartego o sam modu³ RFM22B - identyczny jak w normalnym module eLeReS.
+6. Przywrócono poprzedni sposób liczenia wysokoœci z baro poniewa¿ ten z MWC2.3 dzia³a Ÿle.
+7. Poprawki do obs³ugi sonaru. Nadal nie przetestowane w 100%
+8. Zmniejszono wspó³czynnik "D" dla BARO przy powrocie na failsafe. 
+9. Zablokowano obs³uge BARO na p³ytkach z procesorem 328p w trybie samolotowym (jest zbêdna). 
+   Teraz w 328p w trybie samolotowym mieœci siê nawet obs³uga serial GPS'a (NMEA/UBLOX).
+10.Dodano przesy³anie info o z³apaniu Fix'a oraz odczyt pr¹du przez telemetriê na module RFM22 (eLeReS)
+11.Dodano odczyt i przesy³anie parametru HDOP z GPS przez telemetriê na module RFM22 (eLeReS)
+12.Poprawki dla p³yt 328p umo¿liwiaj¹ce pod³¹czanie GPS lub FTDI bez koniecznosci rekompilacji softu.
+13.Poprawiono machniêcie lotkami po z³apaniu FIX'a dla Flying Wing (Delta).
+
+Wersja 2.26
+------------
+1. Poprawki i uaktualnienia z wersji MWC 2.3. Pozostawi³em wersje 2.2x poniewa¿ nie przeszed³am na styl cpp/h
+   Do konfiguracji u¿ywaæ MultiWiiConf 2.3 !!!
+2. Dodano LCD OLED Digole.
+3. Dodano mo¿liwoœæ konfiguracji parametrów poprzez wirtualny LCD wyœwietlany na Misio-OSD. 
+   Nale¿y odkomentowaæ #define OSD_DISPLAY oraz #define LCD_CONF. W OSD musi byæ soft v0.92 lub nowszy albo v2.04 lub nowszy.
+4. Poprawiono funkcjonalnoœæ menu LCD. Dzia³a te¿ kalibracja V_BAT z menu LCD, napiêcie jest wyœwietlane na bierz¹co.
+5. [COPTERY] Zmniejszono graniczn¹ wartoœæ przechy³u z 80 do 50 stopni dla punktu 1 z wersji 2.25. Lekko zmieniono sposób
+   hamowania po opadaniu przy failsafe. Powinien bardziej energicznie wyhamowaæ. Dodano opadanie 1m/s podczas powrotu
+   na failsafe jeœli jest wy¿ej ni¿ ustalona wysokoœæ przelotowa.
+6. [SAMOLOTY] Dodano mikser dla samolotu z lotkami i ogonem typu V-TAIL. Jeœli V-Tail jest bez lotek - u¿yj typu FLYING_WING
+7. Dodano definicje kilku nowych p³ytek FC dostêpnych w wersji 2.3
+
+
+Wersja 2.25
+------------
+1. [COPTERY] Przechy³ wiêkszy od 25 stopni po etapie stabilizacji przy FailSafe lub wiêkszy od 80 stopni w trakcie powrotu i
+   l¹dowania uznawany jest za oznakê crashu i powoduje natychmiastowe wy³¹czenie silników.
+2. [COPTERY] Dodano obs³ugê sonaru "Generic echo-pulse", np SR-HC04. Na p³ytach MEGA pod³¹cza siê do pinów 11(echo) i 12(trigger). 
+   Piny s¹ zdefiniowane tylko dla p³yt MEGA. W³¹czenie sonaru "Generic.." na p³ytach promini spowoduje b³¹d kompilacji.
+   Po odblokowaniu sonaru utrzymanie wysokoœci dzia³a jako fuzja baro i sonaru. Poni¿ej 1m - sam sonar, od 1m do 3m - sonar+baro,
+   powy¿ej 3m - baro. Za³¹czenie AltHold za³¹cza i baro i sonar. Progi fuzji mo¿na zmieniæ w config.h - sekcja Altitude Hold.
+3. [SAMOLOTY] Zablokowanie przeszkadzaj¹cych opcji z config.h w trybie samolotowym. Teraz ju¿ pozostawienie za³¹czonych tych, które
+   nie powinny byæ za³¹czone dla samolotu nie bêdzie robi³o problemów.
+4. [WSZYSTKIE] Zmiana sposobu wykrywania przechy³u o 25 stopni. Teraz nie jest czy³a na potrz¹sanie FC. Skutkiem ubocznym jest
+   kilkusekundowe mruganie diod na FC po za³¹czeniu zasilania (tak jakby FC by³o mocno przechylone). Po ok 5 sek. wszystko wraca do normy.
+5. [SAMOLOTY] Usuniêto nieu¿ywane MIN_CRUICE_THROTTLE z config.h. Minimalne obroty ustawia siê w ServoMiscConf jako Failsafe Throttle.
+6. [WSZYSTKIE] Usuniêto wsparcie dla przestarza³ego TINY_GPS
+7. [WSZYSTKIE] Usuniêto opcjê DYNBALANCE na rzecz nowego motortesta dostêpnego w ServoMiscConf pokazuj¹cego wibracje przy teœcie.
+   Motortest dzia³a zawsze, a nie dopiero po specjalnej kompilacji jak DYNBALANCE.
+8. [WSZYSTKIE] Kilka poprawek z oficjalnego kodu "dev" MWC
+9. [SAMOLOTY] Zablokowano zerowanie "gyro I term" i "ACC I term" przy gazie na minimum. Teraz nawet z gazem na minimum
+   czyli przy szybowaniu poprawnie dzia³a stabilizacja.
+10.[WSZYSTKIE] Dodano support dla p³ytki "MultiWii PRO Ez3.0". Buzzer jest na wyjœciu A5, a LED'y na A6.
+11.[SAMOLOTY] Poprawiono AltHold umo¿liwiaj¹c zmiany utrzymywanej wysokoœci przy pomocy dr¹¿ka.
+
+Wersja 2.24
+------------
+1. Ze wzglêdów bezpieczeñstwa zablokowano mo¿liwoœæ uzbrojenia silników jeœli jest za³¹czony tryb BARO, GPS_HOME albo GPS_HOLD
+   3 beepy jeœli za³¹czony jest niedozwolony prze³¹cznik, 2 beepy jesli jest w failsafe lub 1 beep jesli nie skalibrowany ACC.
+2. Precyzyjniejsze kalibracje ACC i Gyro (zmiana obcinania danych na zaokr¹glenia)
+3. Poprawiono F/S dla samolotów. Zamiast gwa³townego opadania do wysokoœci przelotowej zrobiono proporcjonalne
+   powolne opadanie zale¿ne od odleg³oœci od bazy.
+4. Dodano obsluge odbiorników GPS/GLONASS na chipsecie MT3333
+5. Poprawka inicjalizacji magnetometru niedopuszczaj¹ca do nasycenia czujnika.
+6. Drobne poprawki i optymalizacja liczenia wysokoœci z baro
+7. Spowolniono nieco opadanie przy l¹dowaniu na F/S oraz podniesiono punkt hamowania po opadaniu
+8. Mniejszy deadband dla latania przy w³¹czonym GPS_HOLD, defaultowo za³¹czono korekcjê THROTTLE w zale¿noœci od przechy³u.
+9. Dodano obs³ugê podwójnego baro na p³ytach kuki07M.
+
+Wersja 2.23
+------------
+1. Dodano wysy³anie eleresem telemetrii w trybie lokalizatora
+2. Poprawiono opcjê SENSORS_TILT_45_DEG_LEFT
+3. Poprawiono inteligentne failsafe
+4. GPS POS_HOLD dzia³a nawet wtedy gdy nie by³o FIX'a w momencie startu coptera
+5. Poprawiono ograniczenia serwa dla TRICOPTERA przy w³¹czonym MEGA_HW_PWM
+6. Testowo dodano automatyczne wyznaczanie HoverGas dla potrzeb inteligentnego failsafe. 
+   Aby w³¹czyæ t¹ funkcjê trzeba w config.h odkomentowaæ #define AUTO_HOVER_GAS
+7. Poprawka blokuj¹ca mo¿liwoœæ uzbrojenia w momencie wy³¹czenia aparatury na postoju
+   jeœli u¿ywamy uzbrajania z prze³¹cznika (a nie z dr¹¿ków). Efektem ubocznym jest
+   opóŸnienie od momentu prze³¹czenia prze³¹cznika ARM do momentu startu silników
+   które jest równe ustawionemu opóŸnieniu detekcji failsafe (standardowo ok 0.5 sek).
+8. Parê poprawek w programie ServoMiscConf.
+
+Wersja 2.22
+------------
+1. Dodano mo¿liwoœæ reversu na serwie CamTrig
+2. Mo¿na ustaliæ wstêpne wartoœci min/max/mid serw w config.h
+3. Dodano funkcje MotorTest (dostepna z programu ServoMiscConfig)
+4. Poprawiono tryb Heli na p³ytkach promini i promicro
+5. Throttle dla zawisu jest trzymane w innej komórce ni¿ throttle dla failsafe.
+6. Poprawiono zepsuty w 2.21 powrót do domu copterów przy inteligentnym Failsafe.
+
+Wersja 2.21
+------------
+Oparta na MultiWii 2.2. 
+Do konfiguracji u¿ywaæ GUI z wersji 2.2. 
+Zosta³y przeniesione wszystkie moje poprawki z poprzednich moich wersji. A dodatkowo:
+1. Wysokoœæ z baro jest relatywna do punktu startu (jak w 2.2)
+2. W momencie uzbrojenia silników 3 krótkie beepy informuj¹ ¿e brak jest fixa GPS.
+3. Wolne mruganie oœwietlenia jak jest rozbrojony oznacza prawid³owy fix GPS.
+4. Usuniêto tryb FAST_LEVEL na rzecz trybu HORIZON dostêpnego w MWC2.2
+5. Blokada pracy serw podczas kalibracji ¿yroskopu i ACC
+6. Przeniesiono serwa dla lataj¹cego sktzyd³a na servo 4 i 5. Od teraz piny dla skrzyd³a:
+   11-lewa lotka, 12-prawa lotka, 8-motor, 44,45-gimbal, 46-camtrig
+7. Ca³kowicie przebudowana obs³uga serw taka sama jak w wersji r1429 z repozytorium Multiwii
+8. W GUI pokazywany jest poziom sygna³u RC nawet jak jest poni¿ej poziomu za³¹czenia Failsafe
+9. Poprawiono wspó³pracê z FC Proflyer v3.1
+10. Przy ustawianiu MIDPOINT serw poprzez wyœwietlacz OLED od razu widaæ zmiany na serwach.
+11. Wiêcej opcji ustawialnych z poziomu GUI (na razie doda³em specjalny program do tych konfiguracji).
+
+
+Wersja 2.19
+------------
+1. Poprawka parsera MTK GPS
+2. Poprawiono nawigacje i failsafe dla samolotow
+3. Wy³¹czono u¿ywanie Magnetometru w samolotach podczas failsafe. U¿ywa kursu z GPS.
+   Przy normalnym lataniu w³¹czenie RTH i jednoczeœnie MAG'a powoduje u¿ywanie MAG'a,
+   a samego RTH powoduje u¿ywanie kursu z GPS.
+4. W trybie samolotowym rozbrojenie dr¹¿kami jest mo¿liwe tylko w ci¹gu 15 sekund od 
+   zazbrojenia, Czas ten jest odliczany tylko jeœli pracuje silnik (dodamy gazu). 
+   Pojedynczy BEEP informuje o zablokowaniu, i póŸniej mo¿na rozbroiæ tylko od³¹czaj¹c zasilanie.
+5. Przymiarka do uruchomienia nawigacji samolotowej z I2C GPS.
+6. Dodano machniêcie lotkami i sterem wysokosci po za³apaniu fixa GPS.
+7. Poprawka do konfiguracji via LCD przy wspolpracy z RFM22B
+8. Trymowanie serw poprzez LCD powoduje ruszanie serwami w czasie rzeczywistym
+9. Dodano servo stretcher dla serw gimbala. Konfiguracja w config.h
+10.Kilka drobnych optymalizacji wziêtych z oficjalnego multiwii 2.2
+
+Wersja 2.18
+------------
+1. Przy za³¹czonym GPS HOLD mo¿na normalnie lataæ. Wycentrowanie dr¹¿ka Pitch i Roll powoduje
+   zapamiêtanie nowej pozycji do jej utrzymywania.
+2. Uruchomiono tryby samolotowe: AIRPLANE oraz FLYING_WING na p³ytach MEGA (np na AIO Pro).
+   Musi byæ aktywna opcja "#define MEGA_HW_PWM_SERVOS"
+   Piny dla skrzyd³a: 44-lewa lotka, 45-prawa lotka, 8-motor, 11,12-gimbal, 46-camtrig
+   Piny dla samolotu: 11-lewa lotka, 12-prawa lotka, 6-kierunek, 7-wysokosc, 8-motor, 44,45-gimbal, 46-camtrig
+3. Pierwsze podejœcie do autopilota (RTH) w trybie samolotowym. NIEPRZETESTOWANE !
+4. Zmieniono alarm krytyczny baterii na bardziej wyraŸny/widoczny
+5. Poprawa utrzymywania pozycji dla odbiorników MTK
+6. Dodano mo¿liwoœæ konfiguracji serw dla samolotu (zakresy, zera, rewersy) z poziomu GUI (specjalna wersja)
+7. Poprawiono zmianê wysokoœci przy w³¹czonym ALT-HOLD (aby nie by³o skoków wysokoœci)
+8. Zmieniono tryb headfree jeœli mamy GPS. W tym przypadku jeœli jesteœmy dalej ni¿ 15m od bazy, to w trybie
+   HeadFree prawy dr¹¿ek do siebie oznacza lot w kierunku bazy, od siebie to oddalanie sie od bazy, a prawo-lewo
+   to kr¹¿enie wokó³ bazy. Poni¿ej 15m od bazy headfree dzia³a po staremu.
+9. Optymalizacje kodu.
+
+Wersja 2.17
+------------
+1. Na LCD pokazywany jest aktualny profil, napiêcie baterii i status GPS + iloœæ SAT.
+2. Ponad dwukrotne przyspieszenie transmisji do wyœwietlacza OLED.
+3. Natywna obs³uga eLeReS'a przy u¿yciu samego modu³u RFM22B wraz z telemetri¹.
+4. Poprawiono b³¹d zapamiêtywania poziomu gazu do zawisu.
+
+Wersja 2.16
+------------
+1. W gui wyœwietlaj¹ siê tylko u¿ywane w danym setupie funkcje BOX'ów
+2. Aktualizacje i optymalizacje z wersji DEV multiwii
+3. Poprawiono b³¹d w procedurze AltHold
+4. Dodano wartosc variometru w komendzie MSP_ALTITUDE, oraz kurs z GPS w komendze MSP_GPS_RAW
+5. Umo¿liwiono stabilizowanie czasu pêtli g³ównej przy pomocy #define FIXED_CYCLE_TIME
+6. Usprawniono odczyt danych z barometru
+7. Usuniêto P.11 z wersji 2.14, zast¹piono mo¿liwoœci¹ wpisania w config.h w definicje 
+   TILT_PITCH_MIDDLE i TILT_ROLL_MIDDLE albo wartoœci 1500 (lub innej) albo AUX1...AUX8.
+   Jeœli wybierzemy jakiœ kana³ AUX to punkt neutralny serwa ustawiamy subtrimem dla danego
+   kana³u AUX w aparaturze.
+8. Usprawniono interpretacje komend wydawanych dr¹¿kami.
+9. Zamieniono 3 definiowalne poziomy alarmu baterii na dwa: krytyczny i ostrzegawczy.  
+10.Jeœli copter siê rusza podczas kalibracji ¿yroskopów to kalibracja jest wstrzymywana 
+   do momentu uspokojenia drgañ.
+11.Poprawka (???) eliminuj¹ca opadanie po w³¹czeniu ALTHOLD'a.
+12.Nowe procedury trybu STABLE (ACC) - mo¿na wybieraæ pomiêdzy star¹ metod¹ a now¹ za pomoc¹
+   #define FAST_LEVEL. Ustawienie jej na 1 lub 2 lub 3 w³¹cza FASTLEVEL na odpowiednim profilu.
+   Dla nowej metody zalecane PID LEVEL to 6,0, 0.015, 50.
+13.Mo¿liwoœæ sterowania interwa³em robienia zdjêæ (CAMTRIG) z aparatury. W config.h w definicje 
+   CAM_TIME_LOW mo¿na wpisaæ albo sta³¹ wartoœc interwa³u robienia zdjêæ(w ms) albo AUX1...AUX8.
+   Jeœli wybierzemy kana³ AUX to mo¿na nim regulowaæ interwa³ w zakresie od 2 do 60 sekund.
+14.Dodano obs³ugê p³yty PROFLYER MWC v3.1
+15.Inicjalizacja GPS'a nie blokuje pêtli, wykonuje siê równolegle z innymi zadaniami
+16.Poprawki do konfiguracji poprzez wyœwietlacz OLED. Czcionka 8x14 - w koñcu cuœ widaæ na OLED.
+
+Wersja 2.15
+------------
+1. Konfiguracja w EEPROM zabezpieczona sum¹ kontroln¹.
+2. Poprawki dla p³ytki Kuki_07M
+3. Drobne poprawki (GPS,PWM ect) zebrane z wersji roboczych multiwii.
+4. Poprawka do wykrywania stanu failsafe.
+5. Trzy niezale¿ne, wybierane dr¹¿kami zestawy ustawieñ. (PID'y, boxy ect) 
+   Set1 - THROTTLE MIN + YAW LEFT + ROLL LEFT  - potwierdzenie 1 beepem i mrugniêciem LED
+   Set2 - THROTTLE MIN + YAW LEFT + PITCH UP   - potwierdzenie 2 beepami i mrugniêciami LED
+   Set3 - THROTTLE MIN + YAW LEFT + ROLL RIGHT - potwierdzenie 3 beepami i mrugniêciami LED
+
+Wersja 2.14
+------------
+1. Dodano mo¿liwoœæ wirtualnego obracania FC o 45 stopni w prawo lub w lewo.
+2. Poprawiono inicjalizacjê GPS'ów.
+3. Dodano test prawid³owych impulsów RC na 4 kana³ach sterowania RC: PITH,ROLL,YAW,THR.
+   Zanik lub wartoœæ poni¿ej 985us na dowolnym z tych kana³ów powoduje uruchomienie F/S.
+   Od teraz definicja i konfiguracja FAILSAFE_CH jest zbêdna.
+4. Nowa procedura utrzymywania wysokoœci (AltHold) bazuj¹ca na fuzji danych z barometru 
+   i akcelerometru (od mahowik'a). Uwaga: Nowe defaultowe ALT PID 40 0.030 30
+5. Sygnalizacja FIX'a GPS LedFlasherem (oœwietleniem). Jak jest rozbrojony, to po z³apaniu
+   Fix'a LED'y zaczynaj¹ mrugaæ.
+6. Jeœli jest FIX, ale iloœæ satelit mniejsza ni¿ 5, dioda stable (¿ó³ta na AIO) œwieci sie ci¹gle.
+7. Poprawka do uruchamiania failsafe pulsami poni¿ej 986us. Takie impulsy nie s¹ brane pod uwagê 
+   przy sterowaniu a wiêc nie nast¹pi zdjêcie np gazu do minimum zanim w³¹czy siê failsafe.
+8. Opcja POSHOLD_ON_LANDING utrzymuj¹ca za³¹czony GPS PosHold a¿ do wyl¹dowania przy failsafe.
+9. Zablokowano mo¿liwoœæ uzbrojenia silników w przypadku aktywnego failsafe.
+10.BOX Failsafe w GUI pokazuje siê na zielono równie¿ przy rozbrojonych silnikach.
+11.Automatyczne przypisywanie nieu¿ywanych kana³ów AUX do sterowania gimbalem. Jeœli ¿aden
+   z chexkboxów dla któregoœ kana³u AUX nie jest zaznaczony, to ten AUX jest automatycznie
+   przypisywany do kontroli PITH gimbala. Jeœli jest te¿ drugi kana³ AUX bez ¿adnej funkcji
+   to jest on przypisywany równie¿ do kontroli osi ROLL gimbala.
+
+Wersja 2.13
+------------
+1. Tylko u¿ywane BOX'y wyœwietlaj¹ siê w GUI
+2. Dodano mo¿liwoœæ za³¹czenia FailSafe z prze³¹cznika (poprzez box FAILSAFE)
+3. Obni¿ono defaultowy poziom zawisu.
+4. Poprawiono obs³uge Spectrum Sattelite, dodano obs³ugê 12CH PPM
+5. Zast¹piono definicjê MEGA_HW_GIMBAL definicj¹ MEGA_HW_PWM_SERVOS. Odblokowuje ona sprzêtowe
+   sterowanie 5 serwami na pinach 44,45,46,11,12
+6. Dodano wyjœcia na servo 4 i 5 na pinach 11 i 12 jeœli jest za³¹czony MEGA_HW_PWM_SERVOS.
+   W tej chwili Servo4=CH9 i Servo5=CH10 (z PPM lub z Spectrum)
+7. Poprawiono b³¹d niedzia³ania CAMTRIG jeœli by³ wybrany MEGA_HW_GIMBAL
+8. Po za³apaniu failsafe na wysokoœci wiêkszej ni¿ przelotowa nie obni¿a wysokoœci podczas
+   powrotu, za to po osi¹gniêciu home szybko opada do wysokoœci przelotowej. Ograniczenie czasu
+   tego kroku jest zmieniane dynamicznie w zale¿noœci od ró¿nicy wysokoœci na której wraca³ i
+   zadanej wysokoœci powrotu. Dodawana jest sekunda na ka¿de 10m ró¿nicy (opadanie 8m/sek). 
+9. Dynamicznie wyliczany maksymalny czas opadania w zale¿noœci od ustawionej wysokoœci przelotowej.
+   0.5sek na ka¿dy metr (opadanie jest 2m/s) + sta³e dodatkowe 20 sekund.
+10. Dodano automatyczne za³¹czenie trybu stable po wybraniu GPS HOLD albo GPS HOME.
+11. Podniesiono próg detekcji poziomu kana³u failsafe z 980 na 985us.
+UWAGA ! Po za³adowaniu tej wersji ponownie wykonaj zapamiêtanie poziomu gazu !!!
+
+
+Wersja 2.12
+------------
+1. Poprawki Inteligentnego Failsafe, poprawiono zachowanie, dodano hamowanie podczas
+   wstêpnej stabilizacji, wyd³u¿ono max czas powrotu do 5minut, a opadania do 1 minuty.
+2. Jak nie ma FIX'a GPS w momencie startu to failsafe nie wróci w losowe miejsce,
+   tylko po prostu wyl¹duje tam gdzie by³.
+3. Dodano niezale¿ne dzia³anie wszystkich 4 interfejsów SERIAL0 - SERIAL3. Mo¿na
+   jednoczeœnie pod³¹czyæ np PC przez FTDI, OSD, GPS i BLUETOOTH, i wszystko bêdzie
+   dzia³aæ jednoczeœnie i niezale¿nie.
+4. Dodano prawid³ow¹ inicjalizacjê GPS UBLOX. W GPS nie trzeba nic przerabiaæ, 
+   nic zwieraæ ECT. Jeœli po pod³¹czeniu pakietu i odmruganiu "hello" diodami 
+   A i C na AIO nie zacznie rytmicznie mrugaæ dioda "B" - ¿ó³ta to znaczy ¿e GPS 
+   nie gada, i trzeba od³¹czyæ i ponownie pod³¹czyæ pakiet. I wtedy bêdzie ju¿ OK.
+5. Dodano definicje #define FAILSAFE_CH w config.h. U¿ywaj¹c normalnego odbiornika
+   wpisujemy tam nazwê pinu na którym zanik impulsów lub czas poni¿ej 980us spowoduje
+   za³¹czenie failsafe. Mo¿liwe wartoœci to THROTTLEPIN, ROLLPIN, PITCHPIN, YAWPIN.
+   U¿ywaj¹c odbiornika z PPM-SUM zamiast nazw wpisujemy numer kana³u PPM na który
+   ma reagowaæ failsafe (1-8). Np dla gazu w Futabie bêdzie to 3. Dla gazu w JR - 1.
+6. Dodano mixer dla hexy 6U
+7. Dodano obs³ugê p³ytki KUKI_07M (tylko pojedyncze baro).
+
+Wersja 2.11
+------------
+1. Definicje i czujniki zdefiniowane dla p³yty AIO Pro.
+2. OSD albo BLUETOOTH na SERIAL3 - za³¹czone defaultowo - 
+   SERIAL3 dzia³a identycznie i jednoczeœnie z UART0
+3. GPS na SERIAL2 - defaultowo MTK GPS. Soft inicjuje GPS'a na 38400baud i 5HZ. 
+   W³¹czaj¹c opcje #define UBLOX (i jednoczeœnie wy³¹czaj¹c #define INIT_MTK_GPS) 
+   mo¿emy u¿yæ GPS'a z UBLOX z RcTimer w trybie UBLOX - trzeba coœ tam na nim zewrzeæ.
+4. BUZZER na wyjœciu 32 AIO - U¿ywaæ buzzera na 5V z generatorem pod³¹czonego 
+   pomiêdzy wyjœcie 32 (+ buzzera) a masê (- BUZZERA).
+5. Sterowanie oœwietleniem na wyjœciu 33. Potrzebny wzmacniacz na tranzystorze NPN
+   do sterowania LED'ami. Emiter do masy, Kolektor do (-)LED, Baza przez rezystor 1k 
+   do wyjœcia 33 w AIO, (+)LED do (+)PAKIETU.
+6. Oœwietlenie zapala siê po uzbrojeniu silników, i sygnalizuje mruganiem s³ab¹ baterie, 
+   failsafe ECT - naœladuje BUZZER (w inwersie jak silniki pracuj¹).
+7. Wejœcie PPM-SUM na pinie A8 (THROTTLE) w AIO Pro. Standardowo jest ustawiony zwyk³y 
+   odbiornik, ale jak chcemy u¿yæ PPM SUM wystarczy odkomentowaæ odpowiednie 
+   #define SERIAL_SUM_PPM i zostawiæ odkomentowane #define PPM_ON_THROTTLE
+8. Autodetekcja iloœci cell baterii dla potrzeb alarmu o s³abej baterii. Dzielnik do 
+   pomiaru baterii podpinamy do A0 - 33k od A0 do masy, 100k od A0 do (+)BATT. 
+   VBATLEVEL jest ustawiony dla takich wartoœci dzielnika. Prawid³owe napiêcie powinno 
+   byæ pokazywane w zakresie od 2 do 6S. Progi alarmu podaje siê w V/cele.
+9. Inteligentny failsafe - oczywiœcie jeœli mamy GPS i na dodatek dobrze dzia³aj¹cy !!!. 
+   Po utracie sygna³u po 1 sekundzie copter siê poziomuje i ustawia gaz na wartoœæ zawisu. 
+   Ten stan trwa 5 sekund. Nastêpnie jeœli napiêcie pakietu jest wy¿sze ni¿ œrodkowy próg 
+   alarmu, copter rozpoczyna wznoszenie na wysokoœæ przelotow¹ (wysokoœæ nad poziomem 
+   startu) ustawian¹ w "config.h" - 20m jest defaultowo. Prêdkoœæ wznoszenia - do 3m/s, 
+   czas max 20s. Jeœli by³ wy¿ej ni¿ wysokoœæ przelotowa to ten krok jest pomijany. 
+   Nastêpnie obraca siê "pyskiem" w stronê domu i zaczyna wracaæ (maksymalna prêdkoœæ 5m/s
+   ale rzeczywiœcie raczej nie osi¹galna). Zmieniaj¹c #define NAV_TAIL_FIRST na true mo¿emy 
+   spowodowaæ ¿e bêdzie wraca³ zadem a nie pyskiem (dla kiepsko potrafi¹cych lataæ pyskiem
+   do siebie u³atwia orientacjê po odzyskaniu kontroli). Jeœli po wypoziomowaniu by³ wy¿ej
+   ni¿ ustawiona wysokoœæ przelotowa, to w trakcie powrotu zmniejsza te¿ wysokoœæ a¿ do
+   osi¹gniêcia przelotowej. Powrót do domu mo¿e trwaæ MAX 4 minuty do osi¹gniêcia miejsca
+   startu albo do momentu osi¹gniêcia 3 poziomu roz³adowania pakietu. W tym momencie jest
+   przerywany, i przechodzi do kolejnego kroku - obraca siê nosem w t¹ stronê jak w momencie
+   startu, i zaczyna opadaæ z prêdkoœci¹ 2m/s a¿ do osi¹gniêcia pu³apu 5m nad miejscem startu.
+   W tym miejscu ostro hamuje do zawisu, po czym l¹duje z prêdkoœci¹ ok 1m/s. Po wyl¹dowaniu
+   po 3-6sekundach wy³¹cza silniki (timeout jest na 20 sekund - po których zawsze wy³¹czy
+   silniki). Podczas ca³ego failsafe drze morde buzzerem i mruga LED'ami. Po wy³¹czeniu
+   silników zaczyna pipaæ co sekundê jako sygna³ "znajdŸ mnie". Odzyskanie sterowania
+   w dowolnym momencie przerywa ca³¹ procedurê.
+
+   I teraz bardzo wa¿na rzecz. Aby inteligentne failsafe dzia³a³o prawid³owo, copter musi 
+   znaæ poziom gazu potrzebny do zawisu. W tym celu zosta³a dodana funkcja zapamiêtywania
+   poziomu gazu dla zawisu. Jak to zrobiæ ?
+   Przypisujemy jakiœ prze³¹cznik AUX aby w³¹cza³ nam tryb BARO. Teraz startujemy i robimy
+   zawis (nie koniecznie lot, mo¿na w rêce doprowadziæ do poziomu zawisu). Nastêpnie w ci¹gu
+   5 sekund CZTERY razy prze³¹czamy ów prze³¹cznik w³¹czaj¹cy tryb baro tam i spowrotem - 
+   copter zapiszczy 4 razy i zamruga diodami potwierdzaj¹c zapamietanie poziomu gazu. 
+   Teraz l¹dujemy w wy³¹czamy silniki, i w tym momencie jest robiony zapis do EEPROM 
+   potwierdzony beepem. T¹ procedurê musimy powtórzyæ przy istotnych zmianach - wagi coptera
+   (do³o¿enie aparatu ect), konfiguracji itp. BEZ KALIBRACJI FAILSAFE NIE ZADZIA£A PRAWID£OWO
+   i copter zamiast wróciæ rozbije siê o glebê albo poleci w chmury (defaultowo bez kalibracji
+   przyjmowany jest gaz na poziomie 1400, co mo¿e byæ za ma³o albo za du¿o dla danego coptera).
+10. Failsafe reaguje nie tylko na zanik pulsów na danym kanale, ale te¿ na wartoœæ THROTTLE
+    poni¿ej 980us. Tak wiêc jeœli Twoj system RC nie wy³¹cza pulsów, (PPM, PWM wsjo rybka) a 
+    umo¿liwia programowanie w³asnych wartoœci failsafe, to zaprogramuj go tak aby w failsafe ustawi³
+    gaz poni¿ej 980us, a wtefy Mwii siê dowie ¿e utraci³eœ zasiêg i uruchomi swoje procedury.
+11. Sygnalizacja stanu GPS diod¹ od STABLE. Jeœli mamy odkomentowany w sofcie GPS to ¿ó³ta dioda
+    "B" na AIO która kiedyœ pokazywa³a za³¹czenie trybu stable (po co ?) teraz s³u¿y do sygnalizacji
+    stanu GPS. Po za³¹czeniu dopóki nie ma FIX'a, ale nap³ywaj¹ dane z GPS to mruga jednostajnie w
+    takt nap³ywaj¹cych danych. Jak w chwile po za³¹czeniu zasilania nie zacznie mrugaæ to znaczy
+    ¿e GPS nie dzia³a, wisi, Ÿle skonfigurowany, albo coœ z nim nie tak. W momencie z³apania FIX'a,
+    ale jeœli odbiera mniej ni¿ 5 satelit, dioda gaœnie. Jak znajdzie 5 satelit to jest pojedyncze
+    mrugniecie i przerwa. 6 satelit to 2 mrugniêcia i przerwa, 7 to 3 mrugniêcia itd.
