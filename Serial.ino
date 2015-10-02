@@ -93,9 +93,6 @@ const uint32_t capability = 0x80000000 + BIND_CAPABLE + BOARD_OPTIONS;
 #define MSP_DEBUGMSG             253   //out message         debug string buffer
 #define MSP_DEBUG                254   //out message         debug1,debug2,debug3,debug4
 
-#define MSP_SET_SERIAL_BAUDRATE  199   //in message          serial 0 boud rate
-#define MSP_ENABLE_FRSKY         198   //in message          no parm
-
 static uint8_t checksum[UART_NUMBER];
 static uint8_t indRX[UART_NUMBER];
 static uint8_t cmdMSP[UART_NUMBER];
@@ -535,19 +532,6 @@ void evaluateCommand() {
    case MSP_MOTOR_PINS:
      s_struct((uint8_t*)&PWM_PIN,8);
      break;
-// ADDED FOR FRSKY
-   case MSP_SET_SERIAL_BAUDRATE: 
-     if(!f.ARMED){
-       SerialOpen(0,read32());
-     }
-     headSerialReply(0);
-     break;
-
-   case MSP_ENABLE_FRSKY:
-     FrskyEnabled=true;
-     headSerialReply(0);
-     break;
-// END FRSKY ADD
    #if defined(USE_MSP_WP)    
    case MSP_WP:
      {
