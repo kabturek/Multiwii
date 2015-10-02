@@ -38,7 +38,7 @@
     //#define OCTOFLATP
     //#define OCTOFLATX
     //#define FLYING_WING       // use for V-Tail too (with servo reverses change)
-    //#define AIRPLANE
+    #define AIRPLANE
     //#define VTAIL_AIRPLANE    // use only for V-Tail with ailerons.
     //#define SINGLECOPTER
     //#define DUALCOPTER
@@ -53,11 +53,11 @@
     //#define MINTHROTTLE 1120 // for Super Simple ESCs 10A
     //#define MINTHROTTLE 1064 // special ESC (simonk)
     //#define MINTHROTTLE 1050 // for brushed ESCs like ladybird
-    #define MINTHROTTLE 1080
+    #define MINTHROTTLE 1064
 
   /****************************    Motor maxthrottle    *******************************/
     /* this is the maximum value for the ESCs at full power, this value can be increased up to 2000 */
-    #define MAXTHROTTLE 1950
+    #define MAXTHROTTLE 2000
 
   /****************************    Mincommand          *******************************/
     /* this is the value for the ESCs when they are not armed
@@ -319,7 +319,7 @@
     /****************************    PPM Sum Reciver    ***********************************/
       /* The following lines apply only for specific receiver with only one PPM sum signal, on digital PIN 2
          Select the right line depending on your radio brand. Feel free to modify the order in your PPM order is different */
-      //#define SERIAL_SUM_PPM         PITCH,YAW,THROTTLE,ROLL,AUX1,AUX2,AUX3,AUX4,8,9,10,11 //For Graupner/Spektrum
+      #define SERIAL_SUM_PPM         PITCH,YAW,THROTTLE,ROLL,AUX1,AUX2,AUX3,AUX4,8,9,10,11 //For Graupner/Spektrum
       //#define SERIAL_SUM_PPM         ROLL,PITCH,THROTTLE,YAW,AUX1,AUX2,AUX3,AUX4,8,9,10,11 //For Robe/Hitec/Futaba
       //#define SERIAL_SUM_PPM         ROLL,PITCH,YAW,THROTTLE,AUX1,AUX2,AUX3,AUX4,8,9,10,11 //For Multiplex
       //#define SERIAL_SUM_PPM         PITCH,ROLL,THROTTLE,YAW,AUX1,AUX2,AUX3,AUX4,8,9,10,11 //For some Hitec/Sanwa/Others
@@ -339,8 +339,12 @@
       #define LOCALIZER_POWER    7    // 0=1mW, 1=2mW, 2=3mW, 3=6mW, 4=13mW, 5=25mW, 6=50mW, 7=100mW
       #define LOCALIZER_DELAY    120  // delay from signal lost to start of localizer in seconds
       #define ELERES_BIND             // uncomment it if you want binding via GUI instead of setting BIND_SIGNATURE manually
+
     /********************** Frsky D-series receiver      ***********************************/
       #define TELEMETRY_FRSKY
+      #define TELEMETRY_FRSKY_SERIAL 1
+      #define KV_MOTOR          1200.0     // KV = RPM per Volt
+      #define R_MOTOR              162     // resistance of each motor in milliohm
 
     /**********************    Spektrum Satellite Reciver    *******************************/
       /* The following lines apply only for Spektrum Satellite Receiver
@@ -445,7 +449,7 @@
   /* you may need to change PINx and PORTx plus #shift according to the desired pin! */
   //#define OVERRIDE_V_BATPIN                   A0 // instead of A3    // Analog PIN 3
 
-  //#define OVERRIDE_PSENSORPIN                 A1 // instead of A2    // Analog PIN 2
+  #define OVERRIDE_PSENSORPIN                 A1 // instead of A2    // Analog PIN 2
 
   //#define OVERRIDE_LEDPIN_PINMODE             pinMode (A1, OUTPUT); // use A1 instead of d13
   //#define OVERRIDE_LEDPIN_TOGGLE              PINC |= 1<<1; // PINB |= 1<<5;     //switch LEDPIN state (digital PIN 13)
@@ -468,6 +472,8 @@
     #define SERIAL1_COM_SPEED 115200
     #define SERIAL2_COM_SPEED 115200
     #define SERIAL3_COM_SPEED 115200
+    //frsky telemetry on serial 1
+    #define SERIAL1_COM_SPEED 9600
 
     /* interleaving delay in micro seconds between 2 readings WMP/NK in a WMP+NK config
        if the ACC calibration time is very long (20 or 30s), try to increase this delay up to 4000
@@ -568,7 +574,7 @@
        PITCH, ROLL and YAW is centered and THROTTLE is set to FAILSAFE_THR0TTLE value. You must set this value to descending about 1m/s or so 
        for best results. This value is depended from your configuration, AUW and some other params.  Next, afrer FAILSAFE_OFF_DELAY the copter is disarmed, 
        and motors is stopped. If RC pulse coming back before reached FAILSAFE_OFF_DELAY time, after the small quard time the RC control is returned to normal. */
-    //#define FAILSAFE                                  // uncomment  to activate the failsafe function
+    #define FAILSAFE                                  // uncomment  to activate the failsafe function
     #define FAILSAFE_DELAY     5                     // Guard time for failsafe activation after signal lost. 1 step = 0.1sec - 0.5sec in example
     #define FAILSAFE_OFF_DELAY 200                    // Time for Landing before motors stop in 0.1sec. 1 step = 0.1sec - 20sec in example
     #define FAILSAFE_THROTTLE  (MINTHROTTLE + 200)    // Throttle level used for landing - may be relative to MINTHROTTLE - as in this case
@@ -816,7 +822,7 @@
        vbat = [0;1023]*16/VBATSCALE
        must be associated with #define BUZZER ! */
     #define VBAT              // uncomment this line to activate the vbat code
-    #define VBATSCALE        86 // change this value if readed Battery voltage is different than real voltage
+    #define VBATSCALE        96 // change this value if readed Battery voltage is different than real voltage
     #define VBATLEVEL_WARN   35 // 3.5V/cell - may be in 0.1V/cell or total voltage (if higher than 40)
     #define VBATLEVEL_CRIT   33 // 3.3V/cell
 
@@ -834,7 +840,8 @@
        1 - hard: - (uses hardware sensor, after configuration gives very good results)
        2 - soft: - (good results +-5% for plush and mystery ESCs @ 2S and 3S, not good with SuperSimple ESC)    */
     //#define POWERMETER_SOFT
-    //#define POWERMETER_HARD
+    #define POWERMETER
+    #define POWERMETER_HARD
     #define PSENSORNULL 0   /* (*) hard only: set to analogRead() value for zero current; for I=0A my sensor
                                    gives 1/2 Vss; that is approx 2.49Volt; */
     #define PINT2mA 132     /* (*) hard: one integer step on arduino analog translates to mA (example 4.9 / 37 * 1000) ;
