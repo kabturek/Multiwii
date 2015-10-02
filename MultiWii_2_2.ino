@@ -531,6 +531,12 @@ static struct {
 } plog;
 #endif
 
+#ifdef TELEMETRY_FRSKY    // FRSKY extension
+static struct {
+  uint8_t TimerStart;
+  uint32_t armingTime;
+} showTime;
+#endif
 // **********************
 // GPS common variables
 // **********************
